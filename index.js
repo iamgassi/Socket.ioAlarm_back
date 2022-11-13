@@ -43,7 +43,7 @@ io.on('connection',(socket)=>{
             {
               console.log("timer",timer)
               setTimeout(() => {
-              const msg="Timer Reached !"
+              const msg="Alarm Reached "
               io.sockets.in(userId).emit('reminder',msg);
             }, timer); 
             }
@@ -206,13 +206,21 @@ app.post('/alarm',(req,res)=>{
    console.log(alarmTime)
 
    if(!username && !alarmId && !alarmTime ){  return res.json({msg:"All field are required"})}
-
+   
    alarmModel.create({
     createdBy:username,
     alarmId,
     alarmTime
    })
-   .then(()=>{console.log("created alarm")})
+   .then((data)=>{
+   
+    console.log("created alarm")
+   })
+   .catch((err)=>{
+    console.log("Inside Err",err.code)
+    if(err.code==11000) return res.json({msg:"Duplicate Alarm can't be save"})
+   })
+   
 
 })
 
