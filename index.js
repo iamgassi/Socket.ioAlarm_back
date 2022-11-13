@@ -176,7 +176,7 @@ app.route('/user/:id?').get((req,res)=>{
 app.get('/alarm/:id?',(req,res)=>{
     const _id=req.params.id
     console.log(_id)
-    alarmModel.find( {alarmId:_id} )
+    alarmModel.find( {alarmId:_id} ).sort({"created_at":-1})
 		.then(function(data)
     {
 		console.log("By id")
