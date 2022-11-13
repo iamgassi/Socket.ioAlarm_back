@@ -45,7 +45,7 @@ io.on('connection',(socket)=>{
               setTimeout(() => {
               const msg="Alarm Reached "
               io.sockets.in(userId).emit('reminder',msg);
-            }, timer); 
+              }, timer); 
             }
           
             // const dayDifference=alarmDateTime.getDate()-currentDateTime.getDate()
@@ -150,7 +150,7 @@ app.route('/user').get((req,res)=>{
 })
 
 app.route('/user/:id?').get((req,res)=>{
-	const _id=req.params.id
+	  const _id=req.params.id
     userModel.findOne( {_id} )
 		.then(function(data)
     {
@@ -159,12 +159,10 @@ app.route('/user/:id?').get((req,res)=>{
       
       if(data === null)
       {
-		res.end("No data")
-		return
+      res.end("No data")
+      return
       } 
-	  return
-	  
-      
+	    return
     }).catch(function(err)
     {
         res.json({msg:err});	
@@ -172,6 +170,7 @@ app.route('/user/:id?').get((req,res)=>{
     })
 
 })
+
 
 app.get('/alarm/:id?',(req,res)=>{
     const _id=req.params.id
@@ -185,17 +184,36 @@ app.get('/alarm/:id?',(req,res)=>{
       
       if(data === null)
       {
-		res.end("No data")
-		return
-      } 
-	  return
-	  
-      
+      res.end("No data")
+      return
+      }      
     }).catch(function(err)
     {
         res.json({msg:err});	
         console.log(err)
     })
+})
+
+app.post('/delete/:id?',(req,res)=>{
+  const _id=req.params.id
+  console.log(_id)
+  alarmModel.deleteOne( {_id} )
+  .then(function(data)
+  {
+  console.log("on delte",data)
+//  console.log(data)
+  // res.json(data);
+    
+  //   if(data === null)
+  //   {
+  //   res.end("No data")
+  //   return
+  //   }      
+  }).catch(function(err)
+  {
+      res.json({msg:err});	
+      console.log(err)
+  })
 })
 
 app.post('/alarm',(req,res)=>{
